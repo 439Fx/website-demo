@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>439Hub</title>
+  <link rel="stylesheet" href="439Hub.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <!-- auth overlay -->
+  <div class="auth-wrapper" id="authWrapper">
+    <div class="auth-box" aria-label="authentication box">
+      <div class="logo-large">
+        <div class="logo-mark-big">
+          <div class="inner-mark"></div>
+        </div>
+        <div class="logo-text-big">439Hub</div>
+      </div>
+      <div class="tab-switcher">
+        <button class="tab-btn active" data-target="signin">Sign In</button>
+        <button class="tab-btn" data-target="signup">Sign Up</button>
+      </div>
+
+      <!-- Sign In -->
+      <div class="form-panel active" id="signin">
+        <p class="subtitle">Enter your credentials to access your account</p>
+        <form class="auth-form" id="loginForm" novalidate>
+          <div class="field">
+            <label for="loginEmail">Email</label>
+            <div class="input-wrapper">
+              <span class="icon" aria-hidden="true">📧</span>
+              <input type="email" id="loginEmail" placeholder="name@example.com" required autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="loginPassword">Password</label>
+              <a href="#" class="forgot">Forget password?</a>
+            </div>
+            <div class="input-wrapper password-wrapper">
+              <span class="icon" aria-hidden="true">🔑</span>
+              <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+              <button type="button" class="eye-toggle" aria-label="toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="inline-options">
+            <label class="remember">
+              <input type="checkbox" id="rememberMe" /> Remember me
+            </label>
+          </div>
+
+          <div class="error" id="loginError"></div>
+          <button type="submit" class="primary-btn">Sign In</button>
+
+          <div class="divider">
+            <span>Or continue with</span>
+          </div>
+
+          <div class="google-wrapper">
+            <div id="googleSignInButton"></div>
+          </div>
+
+          <p class="signup-line">
+            Don’t have an account? <button type="button" class="link-btn switch-to" data-target="signup">Sign up</button>
+          </p>
+        </form>
+      </div>
+
+      <!-- Sign Up -->
+      <div class="form-panel" id="signup">
+        <p class="subtitle">Create a new account to continue</p>
+        <form class="auth-form" id="signupForm" novalidate>
+          <div class="field">
+            <label for="signupName">Name</label>
+            <div class="input-wrapper">
+              <span class="icon" aria-hidden="true">👤</span>
+              <input type="text" id="signupName" placeholder="Your full name" required autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="signupEmail">Email</label>
+            <div class="input-wrapper">
+              <span class="icon" aria-hidden="true">📧</span>
+              <input type="email" id="signupEmail" placeholder="name@example.com" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="signupPassword">Password</label>
+            <div class="input-wrapper password-wrapper">
+              <span class="icon" aria-hidden="true">🔑</span>
+              <input type="password" id="signupPassword" placeholder="Create password" required autocomplete="new-password" />
+              <button type="button" class="eye-toggle" aria-label="toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="signupConfirm">Confirm Password</label>
+            <div class="input-wrapper password-wrapper">
+              <span class="icon" aria-hidden="true">🔑</span>
+              <input type="password" id="signupConfirm" placeholder="Repeat password" required autocomplete="new-password" />
+              <button type="button" class="eye-toggle" aria-label="toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <div class="error" id="signupError"></div>
+          <button type="submit" class="primary-btn">Sign Up</button>
+
+          <div class="divider">
+            <span>Or continue with</span>
+          </div>
+
+          <div class="google-wrapper">
+            <div id="googleSignupButton"></div>
+          </div>
+
+          <p class="signup-line">
+            Already have an account? <button type="button" class="link-btn switch-to" data-target="signin">Sign in</button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- main feed -->
+  <div class="container" id="mainContent" aria-hidden="true">
+    <header class="header" aria-label="site header">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">439Hub</div>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="theme toggle">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="icon-btn" aria-label="notifications">
+          🔔
+          <div class="badge" aria-label="unread notifications">9+</div>
+        </button>
+        <button class="menu" aria-label="menu">☰</button>
+      </div>
+    </header>
+
+    <div class="current-section" id="currentSection">
+      <div class="section-label">Home</div>
+      <button class="create-post-btn" id="openPostModal">+ Create New Post</button>
+    </div>
+
+    <section class="share-box" aria-label="create post">
+      <div class="share-title">Share Your Post Here!</div>
+      <div class="share-buttons">
+        <button data-type="image" aria-label="image"><span>🖼️</span> Image</button>
+        <button data-type="video" aria-label="video"><span>🎥</span> Video</button>
+        <button data-type="trading idea" aria-label="trading idea"><span>📊</span> Trading Idea</button>
+      </div>
+    </section>
+
+    <div class="posts" id="postsContainer">
+      <!-- dynamic posts -->
+    </div>
+  </div>
+
+  <!-- create post modal -->
+  <div class="modal-backdrop" id="postBackdrop"></div>
+  <div class="post-modal" id="postModal" aria-hidden="true">
+    <div class="post-dialog">
+      <div class="modal-header">
+        <div class="title">Create New Post</div>
+        <button class="close-modal" id="closePostModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="subsection">
+          <div class="label">Currency Pair</div>
+          <div class="currency-grid" id="currencyGrid">
+            <button class="pill" data-pair="BTC/USDT">BTC/USDT</button>
+            <button class="pill" data-pair="ETH/USDT">ETH/USDT</button>
+            <button class="pill" data-pair="EUR/USD">EUR/USD</button>
+            <button class="pill" data-pair="EUR/GBP">EUR/GBP</button>
+            <button class="pill" data-pair="XAU/USD">XAU/USD</button>
+            <button class="pill" data-pair="XAG/USD">XAG/USD</button>
+            <button class="pill" data-pair="US30/USD">US30/USD</button>
+            <button class="pill" data-pair="NAS100/USD">NAS100/USD</button>
+          </div>
+        </div>
+        <div class="subsection">
+          <div class="label">Market Impact</div>
+          <div class="impact-grid">
+            <button class="impact-btn" data-impact="Very Bearish">Very Bearish</button>
+            <button class="impact-btn" data-impact="Bearish">Bearish</button>
+            <button class="impact-btn" data-impact="Neutral">Neutral</button>
+            <button class="impact-btn" data-impact="Bullish">Bullish</button>
+            <button class="impact-btn" data-impact="Very Bullish">Very Bullish</button>
+          </div>
+        </div>
+        <div class="subsection">
+          <div class="label">Content</div>
+          <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+        </div>
+        <div class="subsection media-section" id="mediaSection">
+          <div class="label">Image / Video</div>
+          <div class="upload-box" id="uploadBox">
+            <div class="placeholder">
+              <div class="icon">🖼️</div>
+              <div>Choose an image or video</div>
+              <input type="file" id="mediaInput" accept="image/*,video/*" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" id="submitPost">Create Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- comment modal -->
+  <div class="comment-backdrop" id="commentBackdrop"></div>
+  <div class="comment-modal" id="commentModal" aria-hidden="true">
+    <div class="comment-dialog">
+      <div class="modal-header">
+        <div class="title">Comment</div>
+        <button class="close-modal" id="closeCommentModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="commentText">Your Comment</label>
+          <textarea id="commentText" placeholder="Write your comment..."></textarea>
+        </div>
+        <div class="field">
+          <label>Attach</label>
+          <div class="upload-box small" id="commentUpload">
+            <div class="placeholder">
+              <div class="icon">📎</div>
+              <div>Image or video</div>
+              <input type="file" id="commentFile" accept="image/*,video/*" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" id="submitComment">Post Comment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- profile modal -->
+  <div class="profile-modal" id="profileModal" aria-hidden="true">
+    <div class="profile-card">
+      <button class="close-profile" aria-label="close profile">&times;</button>
+      <div class="profile-header">
+        <div class="avatar-large" id="profileAvatar">YN</div>
+        <div class="info">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="profileName" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="profileEmail" />
+          </div>
+        </div>
+      </div>
+      <div class="actions-row">
+        <label class="upload-label">
+          Change Avatar
+          <input type="file" id="avatarInput" accept="image/*" />
+        </label>
+        <button id="saveProfile" class="primary-btn">Save</button>
+      </div>
+      <button id="profileLogout" class="logout-btn full-width">Log Out</button>
+    </div>
+  </div>
+
+  <!-- side menu -->
+  <div class="side-menu" id="sideMenu">
+    <!-- account summary -->
+    <div class="account-card">
+      <div class="avatar-circle" id="menuAvatar">YN</div>
+      <div class="account-info">
+        <div class="account-name" id="menuName">Your Name</div>
+        <div class="account-email" id="menuEmail">you@example.com</div>
+      </div>
+    </div>
+
+    <div class="menu-header">
+      <div class="title blue-title">Menu</div>
+      <button class="close-btn" aria-label="close menu">&times;</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title blue">439Hub home page <span class="icon">🏠</span></div>
+      <div class="item">Home</div>
+      <div class="item">? Tutorial</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title red">Fundamental</div>
+      <div class="item">New</div>
+      <div class="item">Events</div>
+      <div class="item">Calendars</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title green">Analyze</div>
+      <div class="item">Retailers</div>
+      <div class="item">COT data</div>
+      <div class="item">Kill zone</div>
+    </div>
+
+    <div class="menu-footer">
+      <button class="logout-btn">Log Out</button>
+    </div>
+  </div>
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+
+  <script src="439Hub.js"></script>
+</body>
+</html>
